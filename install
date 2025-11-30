@@ -2,7 +2,7 @@
 
 set -e
 
-readonly TMUXFILES_REPO_NAME='luan/tmuxfiles'
+readonly TMUXFILES_REPO_NAME='marcpaquette/tmuxfiles'
 readonly TMUXFILES_REPO_URL="https://github.com/${TMUXFILES_REPO_NAME}"
 
 readonly RED='\033[0;31m'
