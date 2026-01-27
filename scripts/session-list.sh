@@ -2,12 +2,17 @@
 cur=$(tmux display-message -p '#S')
 purple=$(tmux show -gqv @thm_mauve)
 gray=$(tmux show -gqv @thm_overlay_0)
-result=$(tmux list-sessions -F '#S' | while read s; do
+dim=$(tmux show -gqv @thm_surface_1)
+i=0
+result=""
+while read s; do
+  [ -z "$s" ] && continue
+  i=$((i + 1))
+  [ -n "$result" ] && result="$result · "
   if [ "$s" = "$cur" ]; then
-    printf '#[bold,fg=%s]%s#[nobold,fg=%s]' "$purple" "$s" "$gray"
+    result="$result#[fg=$dim]$i:#[bold,fg=$purple]$s#[nobold,fg=$gray]"
   else
-    printf '%s' "$s"
+    result="$result#[fg=$dim]$i:#[fg=$gray]$s"
   fi
-  printf ' · '
-done | sed 's/ · $//')
+done < <(~/.config/tmux/scripts/session-order.sh)
 printf '#[fg=%s]%s#[default]' "$gray" "$result"
