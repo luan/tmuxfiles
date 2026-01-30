@@ -26,7 +26,7 @@ if [[ "$dir_count" -ne 1 ]]; then
 fi
 
 dir=$(echo "$dirs" | head -1)
-echo -e "${GREEN}✓${RESET} All windows in: ${GRAY}$dir${RESET}"
+echo -e "${GREEN}✓${RESET} All windows in: ${GRAY}${dir/#$HOME/\~}${RESET}"
 
 # Check if git repo
 if ! git -C "$dir" rev-parse --git-dir >/dev/null 2>&1; then
