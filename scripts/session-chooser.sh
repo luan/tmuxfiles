@@ -61,8 +61,8 @@ if [ "$1" = "--popup" ]; then
     --header=$'\033[90malt-h:\033[0m hidden \033[90m│ alt-j/k:\033[0m move' \
     --header-first \
     --bind "alt-h:execute-silent($SCRIPTS_DIR/session-hide-toggle.sh {2})+reload(bash -c build_list)" \
-    --bind "alt-j:execute-silent($SCRIPTS_DIR/session-move.sh down {2})+reload(bash -c build_list)+down" \
-    --bind "alt-k:execute-silent($SCRIPTS_DIR/session-move.sh up {2})+reload(bash -c build_list)+up" \
+    --bind "alt-j:execute-silent($SCRIPTS_DIR/session-move.sh down {2})+reload(bash -c build_list)+up" \
+    --bind "alt-k:execute-silent($SCRIPTS_DIR/session-move.sh up {2})+reload(bash -c build_list)+down" \
     --color="bg+:#313244,fg+:#cdd6f4,hl:#f9e2af,hl+:#f9e2af,info:#89b4fa,prompt:#f9e2af,pointer:#f38ba8,marker:#a6e3a1,spinner:#f5c2e7,header:#6c7086")
 
   [ -z "$selected" ] && exit 0
