@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# Move current session up or down in custom order
-# Usage: session-move.sh up|down
+# Move a session up or down in custom order
+# Usage: session-move.sh up|down [session_name]
 ORDER_FILE="$HOME/.config/tmux/session-order"
 direction=$1
-current=$(tmux display-message -p '#S')
+current=${2:-$(tmux display-message -p '#S')}
 
 # Read order into array
 sessions=()
 while IFS= read -r line; do
   [ -n "$line" ] && sessions+=("$line")
-done < <(~/.config/tmux/scripts/session-order.sh)
+done < <(~/.config/tmux/scripts/session-order.sh --all)
 
 # Find current session index
 idx=-1
