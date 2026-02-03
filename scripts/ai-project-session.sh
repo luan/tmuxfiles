@@ -89,16 +89,27 @@ echo ""
 # Fast-path: check if request exactly matches a directory or branch
 fast_path_match() {
   local query="$1"
+  local candidates=()
 
-  # Check directories in ~, ~/src, ~/.config (including hidden .<query>)
-  for base in "$HOME" "$HOME/src" "$HOME/.config"; do
+  # Check directories in priority order: ~/src, ~/.config, ~ (git repos first)
+  for base in "$HOME/src" "$HOME/.config" "$HOME"; do
     for candidate in "$base/$query" "$base/.$query"; do
       if [[ -d "$candidate" ]]; then
-        echo "$candidate"
-        return 0
+        # Git repos get priority, non-git go to back
+        if [[ -d "$candidate/.git" ]] || [[ -f "$candidate/HEAD" ]]; then
+          echo "$candidate"
+          return 0
+        fi
+        candidates+=("$candidate")
       fi
     done
   done
+
+  # Return first non-git match if no git repo found
+  if [[ ${#candidates[@]} -gt 0 ]]; then
+    echo "${candidates[0]}"
+    return 0
+  fi
 
   # Check branch suffix match in worktrees
   for repo in ~/src/*.git; do
