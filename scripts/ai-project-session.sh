@@ -167,11 +167,15 @@ if [[ ! "$request" =~ [[:space:]] ]]; then
 fi
 
 worktree_context=$(gather_worktree_context)
+existing_sessions=$(tmux list-sessions -F '#{session_name}' 2>/dev/null | tr '\n' ', ' || true)
 
 # Log request and context
 {
   echo "=== REQUEST ==="
   echo "$request"
+  echo ""
+  echo "=== EXISTING SESSIONS ==="
+  echo "$existing_sessions"
   echo ""
   echo "=== CONTEXT ==="
   echo "$worktree_context"
@@ -188,6 +192,9 @@ prompt='You are a git worktree assistant. Parse the user request and decide whic
 
 AVAILABLE WORKTREES AND REPOS:
 '"$worktree_context"'
+
+EXISTING TMUX SESSIONS (must pick a different name):
+'"$existing_sessions"'
 
 USER REQUEST: '"$request"'
 
@@ -217,6 +224,7 @@ RULES:
 2. BRANCH NAMING:
    - New branches MUST have "luan/" prefix (e.g., "auth feature" -> "luan/auth")
    - session_name: short word from branch (e.g., "luan/fix-auth" -> "auth")
+   - session_name MUST NOT conflict with existing sessions listed above - add suffix if needed (e.g., auth2)
 
 3. ACTIONS:
    - pre: shell commands to run in worktree BEFORE session (e.g., ["gt sync", "npm install"])
